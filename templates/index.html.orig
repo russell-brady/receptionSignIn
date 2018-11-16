@@ -1,0 +1,99 @@
+
+
+    {% extends "bootstrap/base.html" %}
+   
+   	{% block styles %}
+		{{super()}}
+
+    <link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+   	<link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+   	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+   	<link rel="stylesheet"
+      href="{{url_for('.static', filename='site.css')}}">
+
+
+{% endblock %}
+{% block scripts %}
+
+
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+<script type="text/javascript">
+$(function() {
+    $("#person").autocomplete({
+        source:function(request, response) {
+            $.getJSON("{{url_for('autocomplete')}}",{
+                q: request.term, // in flask, "q" will be the argument to look for using request.args
+            }, function(data) {
+                response(data.res); // matching_results from jsonify
+            });
+        },
+        minLength: 2,
+        select: function(event, ui) {
+            console.log(ui.item.value); // not in your question, but might help later
+        }
+    });
+})
+
+</script>
+
+{% endblock %}
+   	   {% block content %}
+
+
+  
+<section id="contact">
+			<div class="section-content">
+				<h1 class="section-header"><span class="content-header wow fadeIn " data-wow-delay="0.2s" data-wow-duration="2s"> Welcome to Synchronoss</span></h1>
+				<h3>Please sign in and someone will be in touch shortly</h3>
+			</div>
+			<div class="contact-section">
+			<div class="container">
+			<form action="{{ url_for('photo') }}" method="get">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12 form-line">
+			  			<div class="form-group">
+			  				<label for="exampleInputUsername">Your full name</label>
+					    	<input type="text" class="form-control" id="" placeholder=" Enter Name">
+				  		</div>
+				  		<div class="form-group">
+					    	<label for="exampleInputEmail">Email Address</label>
+					    	<input type="email" class="form-control" id="exampleInputEmail" placeholder=" Enter Email id">
+					  	</div>	
+					  	<div class="form-group">
+					    	<label for="telephone">Mobile No.</label>
+					    	<input type="tel" class="form-control" id="telephone" placeholder=" Enter 10-digit mobile no.">
+			  			</div>
+			  				<div class="form-group">
+					    	<label for="visit">Visit Purpose</label>
+					    	<input type="text" class="form-control" id="visit" placeholder="Enter the purpose of your visit">
+			  			</div>
+<<<<<<< HEAD
+			  				<button type="submit" class="btn btn-default submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>  Send Message</button>
+=======
+			  		</div>
+			  		<div class="col-md-6 col-sm-6 col-xs-6">
+				  		<div class="form-group">
+						    	<label for="person">Who are you to see</label>
+						    	<input type="text" class="form-control" id="person" placeholder="Enter the person you're to see(Leave blank if unknown)">
+				  			</div>
+			  			<div class="form-group">
+			  				<label for ="description"> Message</label>
+			  			 	<textarea  class="form-control" id="description" placeholder="Enter Your Message"></textarea>
+			  			</div>
+
+			  			<div>
+
+			  				<button onclick="location.href='/mail'" type="button" class="btn btn-default submit"><i class="fa fa-paper-plane" aria-hidden="true"></i>  Send Message</button>
+			  			</div>
+>>>>>>> 2e004322c7297ba4e41d123eb80eca461536e602
+			  			
+			  		</div>
+			  	
+					</div>
+				</form>
+			
+		</section>
+		{% endblock %}

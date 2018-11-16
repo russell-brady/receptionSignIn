@@ -1,0 +1,108 @@
+
+
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+{{super()}}
+
+<link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<link rel="stylesheet"
+href="{{url_for('.static', filename='site.css')}}">
+<style type="text/css"> 
+@media (min-width: 1200px) {
+img{
+  max-width: 50%;
+  height: auto;
+  
+}
+}
+
+
+@media (min-width: 992px) and (max-width: 1199px) {
+img{
+  max-width: 50%;
+  height: auto;
+  
+}
+}
+</style>
+
+{% endblock %}
+{% block scripts %}
+
+
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+
+<script type="text/javascript">
+	window.addEventListener("DOMContentLoaded", function() {
+
+
+
+
+//var imgSrc = document.getElementById('canvas');
+
+}, false);
+
+</script>
+<script>
+
+		// Put event listeners into place
+		window.addEventListener("DOMContentLoaded", function() {
+			// Grab elements, create settings, etc.
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			var data = JSON.parse('{{ image | tojson }}');
+			var height = JSON.parse('{{ height | tojson }}');
+			var width = JSON.parse('{{ width | tojson }}');	
+			
+			
+			var par = document.getElementById('image');
+			var img = new Image;
+			
+			canvas.width = width;
+			canvas.height = height;
+			
+			
+			img.onload = function(){
+		  			context.drawImage(img, 0, 0, width, height); // Or at whatever offset you like
+		  		};
+		  		img.src = data;
+		  	}, false);
+
+		  </script>
+		  {% endblock %}
+		  {% block content %}
+
+
+
+		  <section id="contact">
+		  	<div class="section-content">
+		  	<img src="{{url_for('.static', filename='synch.png')}}" alt="Logo"/>
+		  		<h3>Visitor Image</h3>
+		  	</div>
+		  	<div class="contact-section">
+		  		<div class="container">
+		  			
+		  			<div class="row">
+		  				<div class="col-md-2 col-sm-2 col-xs-2 form-line">
+		  				</div>
+		  				<div class="col-md-8 col-sm-8 col-xs-8 text-center center-block">
+		  					<canvas id="canvas"  class="border"></canvas>
+		  				</div>
+		  				<div class="col-md-2 col-sm-2 col-xs-2">
+		  				</div>
+		  			</div>
+		  		</div>
+		  	</div>
+
+
+		  	
+
+
+		  </section>
+		  {% endblock %}

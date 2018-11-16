@@ -1,0 +1,86 @@
+
+
+{% extends "bootstrap/base.html" %}
+{% block metas %}
+<meta http-equiv="refresh" content="90;url={{ url_for('index') }}?location={{ scope }}" />
+{% endblock%}
+{% block title %}Synchronoss Reception{% endblock %}
+{% block styles %}
+{{super()}}
+
+<link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+<link rel="stylesheet"
+href="{{url_for('.static', filename='site.css')}}">
+
+<style type="text/css"> 
+@media (min-width: 1200px) {
+img{
+  max-width: 50%;
+  height: auto;
+  
+}
+}
+
+
+@media (min-width: 992px) and (max-width: 1199px) {
+img{
+  max-width: 50%;
+  height: auto;
+  
+}
+}
+</style>
+{% endblock %}
+{% block scripts %}
+
+
+
+{% endblock %}
+{% block content %}
+
+
+
+<section id="contact">
+	<div class="section-content">
+		<img src="{{url_for('.static', filename='synch.png')}}" alt="Logo"/>
+		<h1>{{ person }} and the Reception have been notified and will contact you shortly. Thank you!</h1>
+	</div>
+	<div class="contact-section">
+		<div class="container">
+			
+			</div>
+			</div>
+		</section>
+		{% endblock %}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

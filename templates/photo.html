@@ -1,0 +1,176 @@
+
+
+{% extends "bootstrap/base.html" %}
+{% block metas %}
+<meta http-equiv="refresh" content="90;url={{ url_for('index') }}?location={{ scope }}" />
+{% endblock%}
+{% block title %}Synchronoss Reception{% endblock %}
+{% block styles %}
+{{super()}}
+
+<link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+<link rel="stylesheet"
+href="{{url_for('.static', filename='site.css')}}">
+
+<style type="text/css"> 
+@media (min-width: 1200px) {
+img{
+  max-width: 50%;
+  height: auto;
+  
+}
+}
+
+
+@media (min-width: 992px) and (max-width: 1199px) {
+img{
+  max-width: 50%;
+  height: auto;
+  
+}
+}
+</style>
+{% endblock %}
+{% block scripts %}
+
+
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+
+<script>
+
+	var videoWidth, videoHeight;
+		// Put event listeners into place
+		window.addEventListener("DOMContentLoaded", function() {
+			// Grab elements, create settings, etc.
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			var video = document.getElementById('video');
+			var mediaConfig =  {video: {facingMode: "user"}};
+			
+			var errBack = function(e) {
+				console.log('An error has occurred!', e)
+			};
+
+			// Put video listeners into place
+			if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+				navigator.mediaDevices.getUserMedia(mediaConfig).then(function(stream) {
+					
+					var getVideoSize = function() {
+						videoWidth = video.videoWidth;
+						videoHeight = video.videoHeight;
+						video.removeEventListener('playing', getVideoSize, false);
+						canvas.width = videoWidth;
+						canvas.height = videoHeight;
+
+
+					};
+
+					video.addEventListener('playing', getVideoSize, false);
+					video.src = window.URL.createObjectURL(stream);
+					video.play();
+				});
+			}
+
+			/* Legacy code below! */
+            else if(navigator.getUserMedia) { // Standard
+            	navigator.getUserMedia(mediaConfig, function(stream) {
+            		video.src = stream;
+            		video.play();
+            	}, errBack);
+			} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+				navigator.webkitGetUserMedia(mediaConfig, function(stream){
+					video.src = window.webkitURL.createObjectURL(stream);
+					video.play();
+				}, errBack);
+			} else if(navigator.mozGetUserMedia) { // Mozilla-prefixed
+				navigator.mozGetUserMedia(mediaConfig, function(stream){
+					video.src = window.URL.createObjectURL(stream);
+					video.play();
+				}, errBack);
+			}
+
+			// Trigger photo take
+			var lol = document.getElementById('snap');
+			var pnUrl = 0;
+			var par = document.getElementById('image');
+			var width = document.getElementById('width');
+
+			var height = document.getElementById('height');
+			document.getElementById('snap').addEventListener('click', function() {
+				lol.innerHTML = '<i class="fa fa-camera-retro" aria-hidden="true"></i> Re-Take'
+				context.drawImage(video, 0, 0, videoWidth, videoHeight);
+				pnUrl = canvas.toDataURL();
+				par.value = pnUrl;
+				width.value = videoWidth;
+				height.value = videoHeight;
+
+			});
+		}, false);
+
+	</script>
+	{% endblock %}
+	{% block content %}
+
+
+
+	<section id="contact">
+		<div class="section-content">
+			<img src="{{url_for('.static', filename='synch.png')}}" alt="Logo"/>
+			<h3>Please take a picture so that we recognize you</h3>
+		</div>
+		<div class="contact-section">
+			<div class="container">
+				<form action="{{ url_for('person') }}" method="post">
+					<div class="row">
+						<div class="col-md-2 col-sm-2 col-xs-2 form-line">
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 text-center center-block">
+
+							<video id="video" autoplay></video>
+
+							<button type="button" id="snap" class="btn btn-default submit marg"><i class="fa fa-camera-retro" aria-hidden="true"></i> Take Photo</button>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-2">
+
+							<input type="hidden" name="image"  id="image" value="" />
+							<input type="hidden" name="name"  value="{{name}}" />
+							<input type="hidden" name="email"  value="{{email}}" />
+							<input type="hidden" name="mobile"  value="{{mobile}}" />
+							<input type="hidden" name="visit"  value="{{visit}}" />
+							<input type="hidden" name="width"  value="" id="width" />
+							<input type="hidden" name="height"  value="" id="height" />
+							<input type="hidden" name="scope"  value="{{scope}}"  />
+							
+
+
+
+
+
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-2 col-sm-2 col-xs-2 form-line">
+						</div>
+						<div class="col-md-8 col-sm-8 col-xs-8 text-center center-block">
+							<canvas id="canvas"  class="border"></canvas>
+							<button type="submit" class="btn btn-default submit marg"><i class="fa fa-paper-plane" aria-hidden="true"></i> Next</button>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-2">
+						</div>
+					</div>
+					
+
+
+				</form>
+				</div>
+				</div>
+
+
+			</section>
+			{% endblock %}

@@ -1,0 +1,155 @@
+
+
+{% extends "bootstrap/base.html" %}
+{% block metas %}
+<meta http-equiv="refresh" content="90;url={{ url_for('index') }}?location={{ scope }}" />
+{% endblock%}
+{% block title %}Synchronoss Reception{% endblock %}
+{% block styles %}
+{{super()}}
+
+<link href="https://fonts.googleapis.com/css?family=Oleo+Script:400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Teko:400,700" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+<link rel="stylesheet"
+href="{{url_for('.static', filename='site.css')}}">
+
+<style type="text/css"> 
+@media (min-width: 1200px) {
+img{
+  max-width: 50%;
+  height: auto;
+  
+}
+}
+
+
+@media (min-width: 992px) and (max-width: 1199px) {
+img{
+  max-width: 50%;
+  height: auto;
+  
+}
+}
+</style>
+{% endblock %}
+{% block scripts %}
+
+
+<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+
+<script type="text/javascript">
+	$(function() {
+		var scope = JSON.parse('{{ scope | tojson }}');
+		$("#person").autocomplete({
+			source:function(request, response) {
+				$.getJSON("{{url_for('autocomplete')}}",{
+                q: request.term,
+                scope: scope, // in flask, "q" will be the argument to look for using request.args
+            }, function(data) {
+                response(data.res); // matching_results from jsonify
+            });
+			},
+			minLength: 2,
+			select: function(event, ui) {
+            console.log(ui.item.value); // not in your question, but might help later
+        }
+    });
+	})
+
+</script>
+<script type="text/javascript">
+	window.addEventListener("DOMContentLoaded", function() {
+		var par = document.getElementById('image1');
+		var but = document.getElementById('sub');
+		var width = document.getElementById('width');
+		var height = document.getElementById('height');
+		var data = JSON.parse('{{ image | tojson }}');
+		
+
+		console.debug(data);
+		document.getElementById('sub').addEventListener('click', function() {
+				par.value = data;
+				
+			});
+	}, false);
+</script>
+
+{% endblock %}
+{% block content %}
+
+
+
+<section id="contact">
+	<div class="section-content">
+		<img src="{{url_for('.static', filename='synch.png')}}" alt="Logo"/>
+		<h3>Please sign in and someone will be in touch shortly</h3>
+	</div>
+	<div class="contact-section">
+		<div class="container">
+			<form action="{{ url_for('send') }}" method="post">
+				<div class="row">
+					<div class="col-md-12 col-sm-12 col-xs-12 form-line">
+						<div class="form-group">
+							<label for="person">Who are you to see</label>
+							<input type="text" class="form-control" id="person" name="person" placeholder="Enter the person you're to see(Leave blank if unknown)" required>
+							
+
+						</div>
+						<div class="form-group">
+							<label for ="mess"> Message</label>
+							<input type="text" class="form-control" id="mess" name="mess" placeholder="Enter Your Message" required>
+							<input type="hidden" name="name"  value="{{name}}" />
+							<input type="hidden" name="email"  value="{{email}}" />
+							<input type="hidden" name="mobile"  value="{{mobile}}" />
+							<input type="hidden" name="visit"  value="{{visit}}" />
+							<input type="hidden" name="width"  value="{{width}}"  />
+							<input type="hidden" name="scope" id="scope" value="{{scope}}"  />
+							<input type="hidden" name="height"  value="{{height}}"  />
+							
+						</div>
+
+						
+						<input type="hidden" name="image1" id="image1" value="s"/>
+
+						<button type="submit" id="sub" class="btn btn-default submit" value="kek"><i class="fa fa-paper-plane" aria-hidden="true"></i>  Send Message</button>
+						
+					</div>
+					
+				</div>
+			</form>
+			</div>
+			</div>
+		</section>
+		{% endblock %}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
